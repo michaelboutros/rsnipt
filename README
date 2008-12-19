@@ -15,7 +15,7 @@ $ snipt -d 'generate generic user model'
 Which would then execute the command that was created, whether from the website or from this library.
 
 -- Progress
-At present, the code is stuck at updating / saving records. This is because it appears that when you POST to /save, the site checks your HTTP refferer, and if it isn't the user's index page it doesn't work. However, the developers of Snipt are not opposed to an API, and progress is being made in order to get it working.
+At present, you can retrieve a user's snipts, public snipts, edit a user's snipts, and add a new snipt. Next on the list is deleting a snipt, retrieving by tag, etc. until almost all the website's functionality is available through the API.
 
 -- Contribution
 Just request a pull, and there is a 99% chance I'll take it, as long as it doesn't break anything.
