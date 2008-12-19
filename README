@@ -15,7 +15,7 @@ $ snipt -d 'generate generic user model'
 Which would then execute the command that was created, whether from the website or from this library.
 
 -- Progress
-At present, you can retrieve a user's snipts, public snipts, edit a user's snipts, and add a new snipt. Next on the list is deleting a snipt, retrieving by tag, etc. until almost all the website's functionality is available through the API.
+At present, you can completely manipulate a user's snipts (add/edit/delete), as well get public snipts. Next on the list is retrieving by tag, etc. until almost all of the website's functionality is available through the API.
 
 -- Contribution
 Just request a pull, and there is a 99% chance I'll take it, as long as it doesn't break anything.

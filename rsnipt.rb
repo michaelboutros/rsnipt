@@ -72,7 +72,7 @@ class Snipt
       return :successful => false, :message => 'An unexpected error occured.'
     end
   end
-  
+    
   def update(id_or_snipt, *updates)
     id = id_or_snipt.is_a?(Hash) ? id_or_snipt[:id] : id_or_snipt
 
@@ -102,6 +102,19 @@ class Snipt
       load_snipts
       
       return :successful => true, :message => 'Snipt updated successfully.'
+    rescue
+      return :successful => false, :message => 'An unexpected error occured.'
+    end
+  end
+
+  def delete(id_or_snipt)
+    id = id_or_snipt.is_a?(Hash) ? id_or_snipt[:id] : id_or_snipt
+    
+    begin
+      @agent.post('http://snipt.net/delete', :id => id)
+      load_snipts
+      
+      return :successful => true, :message => 'Snipt successfully deleted.'
     rescue
       return :successful => false, :message => 'An unexpected error occured.'
     end
