@@ -40,20 +40,15 @@ class Snipt
     @logged_in
   end
 
-  def load_snipts(tag = :*, amount = 20)
+  def load_snipts(tag = :*)
     snipts_page = @agent.get("http://www.snipt.net/#{@username}")
     
     snipts_page.search('ul.snipts/li').each do |snipt|
-      id = snipt.attributes['class'].scan(/\d+/)[0]
-      
-      @snipts << {
-        :id => id,
-        :description => snipt.at('span.description').inner_text.delete('∞').strip,
-        :tags => snipt.search('ul/li').to_a.collect {|tag| tag.inner_text.delete(',?').strip },
-        :lexer => snipt.at("pre#lexer-raw-#{id}").inner_text,
-        :public => snipt.at("p#public-raw-#{id}").inner_text == '0' ? false : true,
-        :code => snipt.at("div#code-stylized-#{id}").inner_text
-      }
+      @snipts << self.class.parse_snipt(snipt)
+    end
+    
+    unless tag.nil?
+      @snipts.reject! {|snipt| !snipt[:tags].include?(tag) }
     end
   end
   
@@ -94,4 +89,35 @@ class Snipt
     
     return :success => true, :message => ''
   end
+
+  class << self
+    def snipts(tag = nil)
+      snipts_page = WWW::Mechanize.new.get('http://snipt.net/public')
+      snipts = []
+      
+      snipts_page.search('ul.snipts/li').each do |snipt|
+        snipts << parse_snipt(snipt)
+      end
+      
+      unless tag.nil?
+        snipts.reject! {|snipt| !snipt[:tags].include?(tag) }
+      end
+      
+      snipts
+    end
+  end
+
+  protected
+    def self.parse_snipt(snipt)
+      id = snipt.attributes['class'].scan(/\d+/)[0]
+
+      {
+        :id => id,
+        :description => snipt.at('span.description').inner_text.delete('∞').strip,
+        :tags => snipt.search('ul/li').to_a.collect {|tag| tag.inner_text.delete(',?').strip },
+        :lexer => snipt.at("pre#lexer-raw-#{id}").inner_text,
+        :public => snipt.at("p#public-raw-#{id}").inner_text == '0' ? false : true,
+        :code => snipt.at("div#code-stylized-#{id}").inner_text
+      }    
+    end
 end
