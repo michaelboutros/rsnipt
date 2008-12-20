@@ -6,7 +6,8 @@ class Snipt
   # * +description+: A short description of what this snipt does.
   # * +tags+: An Array of tags that describe the snipt.
   # * +public+: A boolean of whether or not the snipt is to be public.
-  # * +lexer+: The language of this snipt. For more information on lexer's and how to use them in the scope
+  # * +lexer+: The language of this snipt. You can pass either the regular name of the language, such as
+  #   C++, or the 'short form', "cpp". For more information on lexer's and how to use them in the scope
   #   of this library, look at Snipt#load_lexers.
   #
   # On success, #add will simply return:
@@ -21,21 +22,23 @@ class Snipt
       snipt[:tags] = snipt[:tags].join(', ')
       snipt[:public] = snipt[:public].to_s.capitalize
     
+      snipt[:lexer] = (lexer_for(snipt[:lexer]) || snipt[:lexer])
+    
       snipt.each do |key, value|
         snipt.delete(key)
         snipt[key.to_s] = value.strip
       end
     rescue NoMethodError
-      return :successful => false, :message => 'All fields are required.'
+      custom_return :successful => false, :message => 'All fields are required.'
     end
     
     begin
       @agent.post('http://snipt.net/save/', snipt)
       reload_snipts
       
-      return :successful => true, :message => 'Snipt added successfully.'
+      custom_return :successful => true, :message => 'Snipt added successfully.'
     rescue
-      return :successful => false, :message => 'An unexpected error occured.'
+      custom_return :successful => false, :message => 'An unexpected error occured.'
     end
   end
     
@@ -58,15 +61,15 @@ class Snipt
     id = id_or_snipt.is_a?(Struct) ? id_or_snipt.id : id_or_snipt
 
     if updates.nil? || updates.empty?
-      return :successful => true
+      custom_return :successful => true, :message => 'No changes were made.'
     end
     
     if (snipt = @snipts.find {|snipt| snipt[:id] == id.to_s}).nil?
-      return :successful => false, :message => 'Snipt not found.'
+      custom_return :successful => false, :message => 'Snipt not found.'
     end
     
     if updates[0].key?(:id)
-      return :successful => false, :message => 'You cannot change the ID of a snipt.'
+      custom_return :successful => false, :message => 'You cannot change the ID of a snipt.'
     end
     
     updated_snipt = (snipt.hash).update(updates[0])
@@ -82,9 +85,9 @@ class Snipt
       update = @agent.post('http://snipt.net/save/', updated_snipt)
       reload_snipts
       
-      return :successful => true, :message => 'Snipt updated successfully.'
+      custom_return :successful => true, :message => 'Snipt updated successfully.'
     rescue
-      return :successful => false, :message => 'An unexpected error occured.'
+      custom_return :successful => false, :message => 'An unexpected error occured.'
     end
   end
 
@@ -97,9 +100,9 @@ class Snipt
       @agent.post('http://snipt.net/delete', :id => id)
       reload_snipts
     
-      return :successful => true, :message => 'Snipt successfully deleted.'
+      custom_return :successful => true, :message => 'Snipt successfully deleted.'
     rescue
-      return :successful => false, :message => 'An unexpected error occured.'
+      custom_return :successful => false, :message => 'An unexpected error occured.'
     end
   end
   alias :delete :destroy
