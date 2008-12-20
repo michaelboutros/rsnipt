@@ -16,7 +16,7 @@ class Snipt
     
     begin
       @agent.post('http://snipt.net/save/', snipt)
-      load_snipts
+      reload_snipts
       
       return :successful => true, :message => 'Snipt added successfully.'
     rescue
@@ -25,7 +25,7 @@ class Snipt
   end
     
   def update(id_or_snipt, *updates)
-    id = id_or_snipt.is_a?(Hash) ? id_or_snipt[:id] : id_or_snipt
+    id = id_or_snipt.is_a?(Struct) ? id_or_snipt.id : id_or_snipt
 
     if updates.nil? || updates.empty?
       return :successful => true
@@ -39,7 +39,7 @@ class Snipt
       return :successful => false, :message => 'You cannot change the ID of a snipt.'
     end
     
-    updated_snipt = snipt.update(updates[0])
+    updated_snipt = (snipt.hash).update(updates[0])
     updated_snipt[:tags] = updated_snipt[:tags].join(', ')
     updated_snipt[:public] = updated_snipt[:public].to_s.capitalize
     
@@ -50,7 +50,7 @@ class Snipt
     
     begin
       update = @agent.post('http://snipt.net/save/', updated_snipt)
-      load_snipts
+      reload_snipts
       
       return :successful => true, :message => 'Snipt updated successfully.'
     rescue
@@ -58,16 +58,17 @@ class Snipt
     end
   end
 
-  def delete(id_or_snipt)
-    id = id_or_snipt.is_a?(Hash) ? id_or_snipt[:id] : id_or_snipt
+  def destroy(id_or_snipt)
+    id = id_or_snipt.is_a?(Struct) ? id_or_snipt.id : id_or_snipt
   
     begin
       @agent.post('http://snipt.net/delete', :id => id)
-      load_snipts
+      reload_snipts
     
       return :successful => true, :message => 'Snipt successfully deleted.'
     rescue
       return :successful => false, :message => 'An unexpected error occured.'
     end
   end
+  alias :delete :destroy
 end

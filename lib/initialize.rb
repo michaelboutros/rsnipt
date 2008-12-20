@@ -1,5 +1,5 @@
 class Snipt
-  attr_reader :lexers
+  attr_reader :lexers, :username
   
   def initialize(username, password, user_agent_alias = 'Mac FireFox')    
     @agent = WWW::Mechanize.new    

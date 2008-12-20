@@ -1,1 +1,0 @@
-Struct.new("Snitp", :id, :public, :lexer, :code, :desription, :tags)
