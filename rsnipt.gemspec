@@ -1,13 +1,13 @@
 Gem::Specification.new do |s|
   s.name     = "rsnipt"
-  s.version  = "0.9"
+  s.version  = "1.0"
   s.summary  = "A Ruby library and CLI to interact with Snipt.net."
   s.email    = "me@michaelboutros.com"
   s.homepage = "http://github.com/michaelboutros/rsnipt"
   s.description = "A Ruby library and CLI to interact with Snipt.net, whether as a user logged in or as a browser."
   s.has_rdoc = true
   s.authors  = ["Michael Boutros"]
-  s.files    = ["README.txt", 
+  s.files    = ["README.rdoc", 
 		"rsnipt.gemspec",
 		"lib/rsnipt.rb",
 		"lib/rsnipt/actions.rb", 
@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   s.bindir = "bin"
       
   s.rdoc_options = ["--main", "Snipt"]
-  s.extra_rdoc_files = ["README.txt"]
+  s.extra_rdoc_files = ["README.rdoc"]
   
   s.add_dependency("mechanize", ["> 0.0.0"])
 end

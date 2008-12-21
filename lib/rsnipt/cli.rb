@@ -87,6 +87,16 @@ end
 module SniptCLIMethods
   def add(arguments)
     snipt = {}
+    snipt[:code] = arguments.shift
+    
+    if arguments.empty?
+      add(['--help'])
+    elsif (arguments.length / 2) < 4
+      puts "You must provide all fields in order to create a new snipt. Run snipt --help for more information on using this command."
+      exit
+    end
+    
+    attempt_login
     
     OptionParser.new do |options|
       options.banner = 'usage: snipt add "[code]" [details]'
@@ -113,18 +123,6 @@ module SniptCLIMethods
       end
       
     end.parse!(arguments)
-    
-    if arguments.empty?
-      add(['--help'])
-    elsif (arguments.length / 2) <= 4
-      puts "You must provide all fields in order to create a new snipt. Run snipt --help for more information on using this command."
-      exit
-    end
-    
-    snipt[:code] = arguments.shift
-    
-    puts 'Logging in...'
-    attempt_login
     
     add_snipt = @client.add(snipt)
     puts add_snipt[:message]
@@ -179,12 +177,20 @@ module SniptCLIMethods
     OptionParser.new do |options|
       options.banner = 'usage: snipt user [options]'
       
+      options.on('--login', 'Login with a new user.') do
+        create_credentials_for(ask_for_username, ask_for_password)
+        
+        puts 'Credentials saved.'
+      end
+      
       options.on('--flush', 'Flush the old user and prompt for new credentials.') do
         puts 'Flushing old credentials...'
         destroy_credentials
         
         puts 'Enter new information: '        
         create_credentials_for(ask_for_username, ask_for_password)
+        
+        puts 'New credentials saved.'
       end
       
       options.on('--show', 'Show the current stored credentials.') do
