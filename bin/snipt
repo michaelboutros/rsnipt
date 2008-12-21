@@ -1,13 +1,16 @@
 #!/usr/bin/env ruby
 
-if ARGV.length == 0 || ARGV[0] == '--help'
-  puts 'usage'
-  exit
-end
-
 args = ARGV.dup
 ARGV.clear
 
-require File.dirname(__FILE__) + '/../lib/cli.rb'
-require File.dirname(__FILE__) + '/../rsnipt.rb'
+commands = ['add', 'exec']
+if args.length == 0 || args[0] == '--help'  
+  puts 'usage: snipt <command> [data]'
+  puts "commands: #{commands.join(', ')} (run with --help for options)"
+  
+  exit  
+end
+
+require File.dirname(__FILE__) + '/../lib/rsnipt/cli.rb'
+require File.dirname(__FILE__) + '/../lib/rsnipt.rb'
 SniptCLI.new(args.shift, args)

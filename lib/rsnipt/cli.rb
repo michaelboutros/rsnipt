@@ -105,16 +105,16 @@ class SniptCLI
   end
   
   def attempt_login
-     username = ask_for_username
-     password = ask_for_password
+    username = ask_for_username
+    password = ask_for_password
 
-     @client = Snipt.new(username, password)
-     @client.detailed_return = true
+    @client = Snipt.new(username, password)
+    @client.detailed_return = true
 
-     unless @client.logged_in?
-       puts 'Authentication failed.'
-       exit
-     end
+    unless @client.logged_in?
+      puts 'Authentication failed.'
+      exit
+    end
    end
 
    def ask_for_username

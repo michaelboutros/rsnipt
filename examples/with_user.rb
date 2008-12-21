@@ -1,6 +1,8 @@
 require 'rsnipt'
 
 client = Snipt.new('username', 'password')
+client.detailed_return = true
+
 if client.logged_in?
   client.snipts # all of the user's snipts
   # => [SniptStruct, SniptStruct, etc.]
