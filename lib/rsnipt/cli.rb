@@ -1,21 +1,85 @@
 require 'optparse'
+require 'base64'
 
 class SniptCLI
   def initialize(command, arguments)
+    self.extend(SniptCLIMethods)
+    
     commands = ['add', 'exec']
-        
+    
     if arguments.last == '--help'
       send(command.to_sym, arguments)
       exit
-    end
-        
-    if arguments.length == 0 && !commands.include?(command)
+    elsif arguments.length == 0 && !commands.include?(command)
       send('exec', [command])
     else
       send(command.to_sym, arguments)
     end
   end
   
+  def attempt_login(ask = false)
+    if File.exists?(credentials_file) && !ask
+      username, password = *File.read(credentials_file).split(': ')
+      password = Base64.decode64(password)
+      
+      @client = Snipt.new(username, password)
+      
+      unless @client.logged_in?
+        attempt_login(true)
+      end
+    else
+      username = ask_for_username
+      password = ask_for_password
+    
+      @client = Snipt.new(username, password)
+
+      if @client.logged_in?
+        create_credentials_for(username, password)
+      else
+        puts 'Authentication failed.'
+        exit
+      end
+    end
+    
+    @client.detailed_return = true
+  end
+  
+  def credentials_file
+    "#{ENV['HOME']}/.snipt/credentials"
+  end
+  
+  def set_credential_permissions		
+		FileUtils.chmod 0700, File.dirname(credentials_file)
+		FileUtils.chmod 0600, credentials_file
+  end
+  
+  def create_credentials_for(username, password)
+		FileUtils.mkdir_p(File.dirname(credentials_file))
+		
+  	File.open(credentials_file, 'w') do |f|
+  		f.puts "#{username}: #{Base64.encode64(password)}"
+  	end
+  	
+  	set_credential_permissions
+  end
+
+  def ask_for_username
+    print 'Your Snipt username: '
+    return gets.strip
+  end
+
+  def ask_for_password
+    print 'And your password: '
+    system "stty -echo"
+    password = gets.strip
+    system "stty echo"
+    puts  
+    
+    return password
+   end
+end
+
+module SniptCLIMethods
   def add(arguments)
     snipt = {}
     
@@ -104,30 +168,4 @@ class SniptCLI
     end
   end
   
-  def attempt_login
-    username = ask_for_username
-    password = ask_for_password
-
-    @client = Snipt.new(username, password)
-    @client.detailed_return = true
-
-    unless @client.logged_in?
-      puts 'Authentication failed.'
-      exit
-    end
-   end
-
-   def ask_for_username
-     print 'Your Snipt username: '
-     return gets.strip
-   end
-
-   def ask_for_password
-     print 'And your password: '
-     system "stty -echo"
-     password = gets.strip
-     system "stty echo"
-     puts  
-     return password
-   end
 end
