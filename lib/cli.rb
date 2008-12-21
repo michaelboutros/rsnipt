@@ -71,10 +71,10 @@ class SniptCLI
     snipt = @client.snipts.find {|snipt| snipt.description == description.first }
     
     if snipt.nil?
-      puts "Snipt '#{description}' not found."
+      print "\nSnipt '#{description}' not found."
       exit
     else
-      puts "Snipt found: are you sure you want to execute? (yn)"
+      print "\nSnipt found: are you sure you want to execute? (yn) "
       execute = gets.strip
       
       if execute == 'y'
@@ -86,12 +86,12 @@ class SniptCLI
   end
   
   def ask_for_username
-    puts 'Your Snipt username:'
+    print 'Your Snipt username: '
     @username = gets.strip
   end
   
   def ask_for_password
-    puts 'And your password:'
+    print 'And your password: '
     system "stty -echo"
     @password = gets.strip
     system "stty echo"    
