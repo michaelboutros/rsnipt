@@ -9,20 +9,28 @@ is provided in order to provide extremely easy access to the library's funtional
 == Progress
 At present, almost all / all functionality of the website is implemented. I say all because it does everything that I would need, but I say almost all because someone else might come along and want something new. If you do want something new, feel free to do it yourself, or send me an email.
 
-=== Client Example
+=== Client Example for Getting Snipts
   client = Snipt.new('username', 'password')
   
-  client.snipts # => [SniptStruct, SniptStruct]
+  client.snipts # => [SniptStruct, SniptStruct, ...]
+  client.snipts(:ruby) # => [SniptStruct, SniptStruct, ...]
+
+=== Client Example for Adding Snipts
+  client = Snipt.new('username', 'password')
+  ruby_snipt = client.snipts(:ruby).first
   
+  ruby_snipt.update(:description => 'This is a ruby snippet.', :public => true) # true on success, false otherwise
+  ruby_snipt.destroy # true on success, false otherwise
+
 === Public Example
-  snipts = Snipt.public_snipts
+  snipts = Snipt.public_snipts # => [SniptStruct, SniptStruct, ...]
   
 === CLI Example
   # "!!" is the last command that was executed. You will be prompted to enter your username and password, which is 
   # stored for future use. You can flush your credentials from the 'user' command.
   $ snipt add "ssh user@site.com -p 1234" -d 'ssh-login' -t "shell, site.com" -l text -p false
   
-  # Will execute the command that you just created.
+  # Will execute the command that you just created. This is much more useful for longer commands.
   $ snipt ssh-login
   
 == Contributions
