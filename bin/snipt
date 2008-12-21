@@ -3,10 +3,11 @@
 args = ARGV.dup
 ARGV.clear
 
-commands = ['add', 'exec']
+COMMANDS = ['add', 'exec', 'user']
+
 if args.length == 0 || args[0] == '--help'  
   puts 'usage: snipt <command> [data]'
-  puts "commands: #{commands.join(', ')} (run with --help for options)"
+  puts "commands: #{COMMANDS.join(', ')} (run with --help for options)"
   
   exit  
 end
