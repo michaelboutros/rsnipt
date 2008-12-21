@@ -9,21 +9,10 @@ class SniptCLI
       exit
     end
         
-    ask_for_username
-    ask_for_password
-    
-    @client = Snipt.new(@username, @password)
-    @client.detailed_return = true
-    
-    if @client.logged_in?
-      if arguments.length == 0
-        send('exec', [command])
-      else
-        send(command.to_sym, arguments)
-      end
+    if arguments.length == 0 && !commands.include?(command)
+      send('exec', [command])
     else
-      puts 'Authentication failed.'
-      exit
+      send(command.to_sym, arguments)
     end
   end
   
@@ -45,7 +34,7 @@ class SniptCLI
         snipt[:lexer] = (@client.lexer_for(lexer) || lexer)
       end
       
-      option.on('-p [true|false]', String, 'Whether or not the snipt is public.') do |_public|
+      option.on('-p', 'Whether or not the snipt is public.') do |_public|
         snipt[:public] = _public.to_s.capitalize
       end
       
@@ -56,44 +45,89 @@ class SniptCLI
       
     end.parse!(arguments)
     
-    snipt[:code] = arguments.shift
-    
-    unless (arguments.length / 2) < 4
+    if (arguments.length / 2) <= 4
       puts "You must provide all fields in order to create a new snipt. Run snipt --help for more information on using this command."
       exit
     end
+    
+    snipt[:code] = arguments.shift
+    
+    attempt_login
     
     add_snipt = @client.add(snipt)
     puts add_snipt[:message]
   end
   
-  def exec(description)
-    snipt = @client.snipts.find {|snipt| snipt.description == description.first }
+  def exec(arguments)
+    if arguments.empty?
+      puts 'No description entered. Run snipt exec --help for options.'
+      exit
+    end
+    
+    prompt = false
+    
+    OptionParser.new do |options|
+      options.banner = "usage:  snipt exec <description> [options]\n\tsnipt <description> [options]"
+      
+      options.separator ''
+      
+      options.on('-p', 'Whether or not to prompt the user before running the code.') do |prompt|
+        prompt = true
+      end
+      
+      options.on('--help', 'Show this message.') do
+        puts options
+        exit
+      end
+    end.parse!(arguments)
+    
+    attempt_login
+    
+    snipt = @client.snipts.find {|snipt| snipt.description == arguments.first }
     
     if snipt.nil?
-      print "\nSnipt '#{description}' not found."
-      exit
-    else
-      print "\nSnipt found: are you sure you want to execute? (yn) "
-      execute = gets.strip
+      puts "Snipt '#{arguments.first}' not found."
+      exit   
+    else 
+      if prompt    
+        print "Snipt found: are you sure you want to execute? (yn) "
+        execute = gets.strip
       
-      if execute == 'y'
-        system snipt.code
+        if execute == 'y'
+          system snipt.code
+        else
+          exit
+        end
       else
-        exit
+        system snipt.code
       end
     end
   end
   
-  def ask_for_username
-    print 'Your Snipt username: '
-    @username = gets.strip
-  end
-  
-  def ask_for_password
-    print 'And your password: '
-    system "stty -echo"
-    @password = gets.strip
-    system "stty echo"    
-  end
+  def attempt_login
+     username = ask_for_username
+     password = ask_for_password
+
+     @client = Snipt.new(username, password)
+     @client.detailed_return = true
+
+     unless @client.logged_in?
+       puts 'Authentication failed.'
+       exit
+     end
+   end
+
+   def ask_for_username
+     print 'Your Snipt username: '
+     return gets.strip
+   end
+
+   def ask_for_password
+     print 'And your password: '
+     system "stty -echo"
+     password = gets.strip
+     system "stty echo"
+     puts  
+     return password
+   end
 end
