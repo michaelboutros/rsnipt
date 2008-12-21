@@ -16,6 +16,17 @@ class SniptStruct < Struct.new(:client, :hash, :id, :author, :public, :lexer, :c
   end
   alias :delete :destroy
   
+  alias :full_inspect :inspect
+  def inspect
+    client_string = client.instance_of?(Snipt) ? 'Snipt (instance)' : 'Snipt (class)'
+    "#<SniptStruct client=#{client_string}, id=#{id.inspect}, author=#{author.inspect}, public=#{public.inspect}, lexer=#{lexer.inspect}, code=#{code.inspect}, description=#{description.inspect}, tags=#{tags.inspect}>"
+  end
+  alias :to_s :inspect
+  
+  def public?
+    self.public
+  end
+  
   private
     def owned_by?(client)
       client.respond_to?(:username) && client.username == author

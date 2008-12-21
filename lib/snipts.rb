@@ -14,25 +14,29 @@ class Snipt
   
   def load_snipts(tag = nil)    
     tag_path = "/tag/#{tag}" if tag
-    
+  
     begin
       snipts_page = @agent.get("http://www.snipt.net/#{@username}/#{tag_path}")
       
-      snipts = snipts_page.search('ul.snipts/li').map do |snipt|
+      snipts = snipts_page.search('ul.snipts/li').collect do |snipt|
         self.class.parse_snipt(snipt, self, @username)
       end
       
-      return snipts
+      snipts
     rescue
+      []
     end
   end
   
-  def reload_snipts(tag = nil)
-    @snipts.clear and return @snipts = load_snipts(tag)
+  def reload_snipts(tag = nil)    
+    @snipts.clear
+    @snipts = load_snipts(tag)
+  
+    return @snipts
   end
   
   def snipts(tag = nil)
-    reload_snipts(tag) if tag
+    reload_snipts(tag)
   end  
   
   def public_snipts(tag = nil)
@@ -62,6 +66,6 @@ class Snipt
         snipt_hash[:code],
         snipt_hash[:description],
         snipt_hash[:tags]
-        )
+      )
     end
 end

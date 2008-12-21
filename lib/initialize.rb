@@ -1,10 +1,10 @@
 class Snipt
-  attr_accessor :detailed_returns
+  attr_accessor :detailed_return
   attr_reader :lexers, :username
   
   # Takes the username and password of the user that will be logged in.
   def initialize(username, password)    
-    @detailed_returns = true
+    @detailed_return = false
     
     @agent = WWW::Mechanize.new    
     @agent.user_agent_alias = 'Mac FireFox'
@@ -19,7 +19,7 @@ class Snipt
   end
   
   def custom_return(input) # :nodoc:
-    return self.detailed_returns ? input : input[:successful]
+    return self.detailed_return ? input : input[:successful]
   end
   
   def login(username, password) # :nodoc:
