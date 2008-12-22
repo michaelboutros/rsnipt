@@ -49,6 +49,7 @@ class Snipt
       snipt_hash = {
         :id => id,
         :author => (owner || snipt.at("span.posted-by/a").inner_text),
+        :permalink => 'http://www.snipt.net' + snipt.at('span.description/a').attributes['href'].to_s,
         :public => snipt.at("p#public-raw-#{id}").inner_text == '0' ? false : true,
         :lexer => snipt.at("pre#lexer-raw-#{id}").inner_text,
         :code => snipt.at("div#code-stylized-#{id}").inner_text,
@@ -61,6 +62,7 @@ class Snipt
         snipt_hash, 
         snipt_hash[:id],
         snipt_hash[:author],
+        snipt_hash[:permalink],
         snipt_hash[:public],
         snipt_hash[:lexer],
         snipt_hash[:code],

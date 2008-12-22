@@ -1,4 +1,4 @@
-class SniptStruct < Struct.new(:client, :hash, :id, :author, :public, :lexer, :code, :description, :tags)
+class SniptStruct < Struct.new(:client, :hash, :id, :author, :permalink, :public, :lexer, :code, :description, :tags)
   def update(*updates)
     if owned_by?(client)
       client.update(self, updates[0])
@@ -19,7 +19,7 @@ class SniptStruct < Struct.new(:client, :hash, :id, :author, :public, :lexer, :c
   alias :full_inspect :inspect
   def inspect
     client_string = client.instance_of?(Snipt) ? 'Snipt (instance)' : 'Snipt (class)'
-    "#<SniptStruct client=#{client_string}, id=#{id.inspect}, author=#{author.inspect}, public=#{public.inspect}, lexer=#{lexer.inspect}, code=#{code.inspect}, description=#{description.inspect}, tags=#{tags.inspect}>"
+    "#<SniptStruct client=#{client_string}, id=#{id.inspect}, author=#{author.inspect}, permalink=#{permalink.inspect}, public=#{public.inspect}, lexer=#{lexer.inspect}, code=#{code.inspect}, description=#{description.inspect}, tags=#{tags.inspect}>"
   end
   alias :to_s :inspect
   
