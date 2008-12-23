@@ -128,6 +128,56 @@ module SniptCLICommands
     puts add_snipt[:message]
   end
   
+  def update(arguments)    
+    if arguments.empty?
+      update(['--help'])
+      exit
+    else
+      description = arguments.shift
+      
+      if arguments.empty?
+        puts 'No updates provided, snipt not updated.'
+        exit
+      end
+    end
+    
+    attempt_login
+    
+    snipt = @client.snipts.find {|snipt| snipt.description == description}
+    if snipt.nil?
+      puts "Snipt #{description.inspect} not found."
+      exit
+    end
+    
+    snipt_updates = {}
+    OptionParser.new do |options|
+      options.banner = "usage: snipt update [description] <updates>"
+      
+      options.on('-d [description]', '--description [description]', String, 'The snipt\'s description.') do |description|
+        snipt_updates[:description] = description
+      end
+      
+      options.on('-t [tag1,tag2]', '--tags [tag1,tag2]', Array, 'The snip\'s tags.') do |tags|
+        snipt_updates[:tags] = tags
+      end
+      
+      options.on('-l [language]', '--lexer [language]', String, 'The snipt\'s lexer.') do |lexer|
+        snipt_updates[:lexer] = (@client.lexer_for(lexer) || lexer)
+      end
+      
+      options.on('-p [public]', '--public [public]', 'Whether or not the snipt is public.') do |_public|
+        snipt_updates[:public] = _public.to_s.capitalize
+      end
+            
+      options.on('--help', 'Show this message.') do
+        puts options
+        exit
+      end   
+    end.parse(arguments)
+    
+    puts snipt.update(snipt_updates)[:message]
+  end
+  
   def exec(arguments)
     prompt = false
     
