@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: Snipt</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href=".././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">Snipt</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../files/lib/rsnipt/actions_rb.html">
+                lib/rsnipt/actions.rb
+                </a>
+        <br />
+                <a href="../files/lib/rsnipt/initialize_rb.html">
+                lib/rsnipt/initialize.rb
+                </a>
+        <br />
+                <a href="../files/lib/rsnipt/snipts_rb.html">
+                lib/rsnipt/snipts.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                Object
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000015">add</a>&nbsp;&nbsp;
+      <a href="#M000018">delete</a>&nbsp;&nbsp;
+      <a href="#M000017">destroy</a>&nbsp;&nbsp;
+      <a href="#M000021">lexer_for</a>&nbsp;&nbsp;
+      <a href="#M000023">load_snipts</a>&nbsp;&nbsp;
+      <a href="#M000020">logged_in?</a>&nbsp;&nbsp;
+      <a href="#M000019">new</a>&nbsp;&nbsp;
+      <a href="#M000027">parse_snipt</a>&nbsp;&nbsp;
+      <a href="#M000026">public_snipts</a>&nbsp;&nbsp;
+      <a href="#M000024">reload_snipts</a>&nbsp;&nbsp;
+      <a href="#M000025">snipts</a>&nbsp;&nbsp;
+      <a href="#M000022">snipts</a>&nbsp;&nbsp;
+      <a href="#M000016">update</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+
+    <div id="attribute-list">
+      <h3 class="section-bar">Attributes</h3>
+
+      <div class="name-list">
+        <table>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">detailed_return</td>
+          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
+          <td class="context-item-desc"></td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">lexers</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc"></td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">username</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc"></td>
+        </tr>
+        </table>
+      </div>
+    </div>
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Class methods</h3>
+
+      <div id="method-M000019" class="method-detail">
+        <a name="M000019"></a>
+
+        <div class="method-heading">
+          <a href="Snipt.src/M000019.html" target="Code" class="method-signature"
+            onclick="popupCode('Snipt.src/M000019.html');return false;">
+          <span class="method-name">new</span><span class="method-args">(username, password)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Takes the username and password of the user that will be logged in.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000022" class="method-detail">
+        <a name="M000022"></a>
+
+        <div class="method-heading">
+          <a href="Snipt.src/M000022.html" target="Code" class="method-signature"
+            onclick="popupCode('Snipt.src/M000022.html');return false;">
+          <span class="method-name">snipts</span><span class="method-args">(tag = nil, client = nil)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <h3 class="section-bar">Protected Class methods</h3>
+
+      <div id="method-M000027" class="method-detail">
+        <a name="M000027"></a>
+
+        <div class="method-heading">
+          <a href="Snipt.src/M000027.html" target="Code" class="method-signature"
+            onclick="popupCode('Snipt.src/M000027.html');return false;">
+          <span class="method-name">parse_snipt</span><span class="method-args">(snipt, client_instance, owner = nil)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <h3 class="section-bar">Public Instance methods</h3>
+
+      <div id="method-M000015" class="method-detail">
+        <a name="M000015"></a>
+
+        <div class="method-heading">
+          <a href="Snipt.src/M000015.html" target="Code" class="method-signature"
+            onclick="popupCode('Snipt.src/M000015.html');return false;">
+          <span class="method-name">add</span><span class="method-args">(snipt)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+This method is used to <a href="Snipt.html#M000015">add</a> <a
+href="Snipt.html#M000022">snipts</a> directly to a user&#8216;s account
+through the client instance. The following fields are <em>required</em>,
+and if they are not given then the snipt will not be created:
+</p>
+<ul>
+<li><tt>code</tt>: The code or command that makes up the body of the snipt.
+
+</li>
+<li><tt>description</tt>: A short description of what this snipt does.
+
+</li>
+<li><tt>tags</tt>: An Array of tags that describe the snipt.
+
+</li>
+<li><tt>public</tt>: A boolean of whether or not the snipt is to be public.
+
+</li>
+<li><tt>lexer</tt>: The language of this snipt. You can pass either the regular
+name of the language, such as C++, or the &#8216;short form&#8217;,
+&quot;cpp&quot;. For more information on lexer&#8216;s and how to use them
+in the scope of this library, look at Snipt#load_lexers.
+
+</li>
+</ul>
+<p>
+On success, <a href="Snipt.html#M000015">add</a> will simply return:
+</p>
+<pre>
+  {:successfull =&gt; true, :message =&gt; 'Snipt added successfully.'}
+</pre>
+<p>
+On fail, <a href="Snipt.html#M000015">add</a> will return more information
+in the form of a descriptive error message, such as:
+</p>
+<pre>
+  {:successfull =&gt; false, :message =&gt; 'All fields are required.'}
+</pre>
+        </div>
+      </div>
+
+      <div id="method-M000018" class="method-detail">
+        <a name="M000018"></a>
+
+        <div class="method-heading">
+          <span class="method-name">delete</span><span class="method-args">(id_or_snipt)</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Snipt.html#M000017">destroy</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000017" class="method-detail">
+        <a name="M000017"></a>
+
+        <div class="method-heading">
+          <a href="Snipt.src/M000017.html" target="Code" class="method-signature"
+            onclick="popupCode('Snipt.src/M000017.html');return false;">
+          <span class="method-name">destroy</span><span class="method-args">(id_or_snipt)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+This method simply destroys the snipt given. Like with <a
+href="Snipt.html#M000016">update</a>, you can either pass the snipt&#8216;s
+id or the <a href="SniptStruct.html">SniptStruct</a> instance.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000021" class="method-detail">
+        <a name="M000021"></a>
+
+        <div class="method-heading">
+          <a href="Snipt.src/M000021.html" target="Code" class="method-signature"
+            onclick="popupCode('Snipt.src/M000021.html');return false;">
+          <span class="method-name">lexer_for</span><span class="method-args">(language)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns the lexer&#8216;s &quot;short form&quot; of the language, as
+defined by Snipt.net. For example:
+</p>
+<pre>
+  client.lexer_for('C++') # =&gt; 'cpp'
+  client.lexer_for('gibberish') =&gt; nil
+</pre>
+        </div>
+      </div>
+
+      <div id="method-M000023" class="method-detail">
+        <a name="M000023"></a>
+
+        <div class="method-heading">
+          <a href="Snipt.src/M000023.html" target="Code" class="method-signature"
+            onclick="popupCode('Snipt.src/M000023.html');return false;">
+          <span class="method-name">load_snipts</span><span class="method-args">(tag = nil)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000020" class="method-detail">
+        <a name="M000020"></a>
+
+        <div class="method-heading">
+          <a href="Snipt.src/M000020.html" target="Code" class="method-signature"
+            onclick="popupCode('Snipt.src/M000020.html');return false;">
+          <span class="method-name">logged_in?</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns true if the user logged in successfully.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000026" class="method-detail">
+        <a name="M000026"></a>
+
+        <div class="method-heading">
+          <a href="Snipt.src/M000026.html" target="Code" class="method-signature"
+            onclick="popupCode('Snipt.src/M000026.html');return false;">
+          <span class="method-name">public_snipts</span><span class="method-args">(tag = nil)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000024" class="method-detail">
+        <a name="M000024"></a>
+
+        <div class="method-heading">
+          <a href="Snipt.src/M000024.html" target="Code" class="method-signature"
+            onclick="popupCode('Snipt.src/M000024.html');return false;">
+          <span class="method-name">reload_snipts</span><span class="method-args">(tag = nil)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000025" class="method-detail">
+        <a name="M000025"></a>
+
+        <div class="method-heading">
+          <a href="Snipt.src/M000025.html" target="Code" class="method-signature"
+            onclick="popupCode('Snipt.src/M000025.html');return false;">
+          <span class="method-name">snipts</span><span class="method-args">(tag = nil)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000016" class="method-detail">
+        <a name="M000016"></a>
+
+        <div class="method-heading">
+          <a href="Snipt.src/M000016.html" target="Code" class="method-signature"
+            onclick="popupCode('Snipt.src/M000016.html');return false;">
+          <span class="method-name">update</span><span class="method-args">(id_or_snipt, *updates)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+This method is used to <a href="Snipt.html#M000016">update</a> a snipt
+directly through the client interface. This method takes:
+</p>
+<ul>
+<li><tt>id</tt> or <tt>snipt</tt>: Either the id of the snipt, or the <a
+href="SniptStruct.html">SniptStruct</a> instance itself.
+
+</li>
+<li><tt>updates</tt>: A hash containing the updated field values. Note that
+this will completely rewrite each field, so if you want to <a
+href="Snipt.html#M000015">add</a> a tag, you have to pass the entire tags
+array, plus the <a href="Snipt.html#M000019">new</a> tag. For example:
+
+<pre>
+  snipt = client.snipts(:ruby).first
+  snipt.tags # =&gt; ['ruby', 'library', 'date']
+
+  client.update(snipt, :tags =&gt; (snipt.tags &lt;&lt; 'time'))
+</pre>
+</li>
+</ul>
+<p>
+On success, this method will simply return true and a message:
+</p>
+<pre>
+  {:successfull =&gt; true, :message =&gt; 'Snipt updated successfully.'}
+</pre>
+<p>
+On failure, the method will return false as well as a more descriptive
+message, such as:
+</p>
+<pre>
+  {:successful =&gt; false, :message =&gt; 'Snipt not found.'}
+</pre>
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

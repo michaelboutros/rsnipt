@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>add (SniptCLICommands)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/rsnipt/cli.rb, line 88</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">add</span>(<span class="ruby-identifier">arguments</span>)
+    <span class="ruby-identifier">snipt</span> = {}
+    <span class="ruby-identifier">snipt</span>[<span class="ruby-identifier">:code</span>] = <span class="ruby-identifier">arguments</span>.<span class="ruby-identifier">shift</span>
+    
+    <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">arguments</span>.<span class="ruby-identifier">empty?</span>
+      <span class="ruby-identifier">add</span>([<span class="ruby-value str">'--help'</span>])
+    <span class="ruby-keyword kw">elsif</span> (<span class="ruby-identifier">arguments</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">/</span> <span class="ruby-value">2</span>) <span class="ruby-operator">&lt;</span> <span class="ruby-value">4</span>
+      <span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;You must provide all fields in order to create a new snipt. Run snipt --help for more information on using this command.&quot;</span>
+      <span class="ruby-identifier">exit</span>
+    <span class="ruby-keyword kw">end</span>
+    
+    <span class="ruby-identifier">attempt_login</span>
+    
+    <span class="ruby-constant">OptionParser</span>.<span class="ruby-identifier">new</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">options</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">options</span>.<span class="ruby-identifier">banner</span> = <span class="ruby-value str">'usage: snipt add &quot;[code]&quot; [details]'</span>
+      
+      <span class="ruby-identifier">options</span>.<span class="ruby-identifier">on</span>(<span class="ruby-value str">'-d [description]'</span>, <span class="ruby-constant">String</span>, <span class="ruby-value str">'A short description of the snipt.'</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">description</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">snipt</span>[<span class="ruby-identifier">:description</span>] = <span class="ruby-identifier">description</span>
+      <span class="ruby-keyword kw">end</span>
+      
+      <span class="ruby-identifier">options</span>.<span class="ruby-identifier">on</span>(<span class="ruby-value str">'-t [tag1,tag2]'</span>, <span class="ruby-constant">Array</span>, <span class="ruby-value str">'A comma seperated list of tags for this snipt.'</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">tags</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">snipt</span>[<span class="ruby-identifier">:tags</span>] = <span class="ruby-identifier">tags</span>
+      <span class="ruby-keyword kw">end</span>
+      
+      <span class="ruby-identifier">options</span>.<span class="ruby-identifier">on</span>(<span class="ruby-value str">'-l [language]'</span>, <span class="ruby-constant">String</span>, <span class="ruby-value str">&quot;The code\'s lexer, in short or normal form. See Snipt#lexer_for.&quot;</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">lexer</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">snipt</span>[<span class="ruby-identifier">:lexer</span>] = (<span class="ruby-ivar">@client</span>.<span class="ruby-identifier">lexer_for</span>(<span class="ruby-identifier">lexer</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">lexer</span>)
+      <span class="ruby-keyword kw">end</span>
+      
+      <span class="ruby-identifier">options</span>.<span class="ruby-identifier">on</span>(<span class="ruby-value str">'-p'</span>, <span class="ruby-value str">'Whether or not the snipt is public.'</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">_public</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">snipt</span>[<span class="ruby-identifier">:public</span>] = <span class="ruby-identifier">_public</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">capitalize</span>
+      <span class="ruby-keyword kw">end</span>
+      
+      <span class="ruby-identifier">options</span>.<span class="ruby-identifier">on</span>(<span class="ruby-value str">'--help'</span>, <span class="ruby-value str">'Show this message.'</span>) <span class="ruby-keyword kw">do</span> 
+        <span class="ruby-identifier">puts</span> <span class="ruby-identifier">options</span>
+        <span class="ruby-identifier">exit</span>
+      <span class="ruby-keyword kw">end</span>
+      
+    <span class="ruby-keyword kw">end</span>.<span class="ruby-identifier">parse!</span>(<span class="ruby-identifier">arguments</span>)
+    
+    <span class="ruby-identifier">add_snipt</span> = <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">add</span>(<span class="ruby-identifier">snipt</span>)
+    <span class="ruby-identifier">puts</span> <span class="ruby-identifier">add_snipt</span>[<span class="ruby-identifier">:message</span>]
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>add (Snipt)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/rsnipt/actions.rb, line 18</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">add</span>(<span class="ruby-identifier">snipt</span>)
+    <span class="ruby-identifier">snipt</span>[<span class="ruby-identifier">:id</span>] = <span class="ruby-value str">'0'</span>
+   
+    <span class="ruby-keyword kw">begin</span> 
+      <span class="ruby-identifier">snipt</span>[<span class="ruby-identifier">:tags</span>] = <span class="ruby-identifier">snipt</span>[<span class="ruby-identifier">:tags</span>].<span class="ruby-identifier">join</span>(<span class="ruby-value str">', '</span>)
+      <span class="ruby-identifier">snipt</span>[<span class="ruby-identifier">:public</span>] = <span class="ruby-identifier">snipt</span>[<span class="ruby-identifier">:public</span>].<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">capitalize</span>
+    
+      <span class="ruby-identifier">snipt</span>[<span class="ruby-identifier">:lexer</span>] = (<span class="ruby-identifier">lexer_for</span>(<span class="ruby-identifier">snipt</span>[<span class="ruby-identifier">:lexer</span>]) <span class="ruby-operator">||</span> <span class="ruby-identifier">snipt</span>[<span class="ruby-identifier">:lexer</span>])
+    
+      <span class="ruby-identifier">snipt</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">snipt</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">key</span>)
+        <span class="ruby-identifier">snipt</span>[<span class="ruby-identifier">key</span>.<span class="ruby-identifier">to_s</span>] = <span class="ruby-identifier">value</span>.<span class="ruby-identifier">strip</span>
+      <span class="ruby-keyword kw">end</span>
+    <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">NoMethodError</span>
+      <span class="ruby-identifier">custom_return</span> <span class="ruby-identifier">:successful</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">false</span>, <span class="ruby-identifier">:message</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'All fields are required.'</span>
+    <span class="ruby-keyword kw">end</span>
+    
+    <span class="ruby-keyword kw">begin</span>
+      <span class="ruby-ivar">@agent</span>.<span class="ruby-identifier">post</span>(<span class="ruby-value str">'http://snipt.net/save/'</span>, <span class="ruby-identifier">snipt</span>)
+      <span class="ruby-identifier">reload_snipts</span>
+      
+      <span class="ruby-identifier">custom_return</span> <span class="ruby-identifier">:successful</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>, <span class="ruby-identifier">:message</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Snipt added successfully.'</span>
+    <span class="ruby-keyword kw">rescue</span>
+      <span class="ruby-identifier">custom_return</span> <span class="ruby-identifier">:successful</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">false</span>, <span class="ruby-identifier">:message</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'An unexpected error occured.'</span>
+    <span class="ruby-keyword kw">end</span>
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

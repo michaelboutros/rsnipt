@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>File: README.rdoc</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href=".././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+  <div id="fileHeader">
+    <h1>README.rdoc</h1>
+    <table class="header-table">
+    <tr class="top-aligned-row">
+      <td><strong>Path:</strong></td>
+      <td>README.rdoc
+      </td>
+    </tr>
+    <tr class="top-aligned-row">
+      <td><strong>Last Update:</strong></td>
+      <td>Tue Dec 23 17:51:37 -0500 2008</td>
+    </tr>
+    </table>
+  </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <h1>rSnipt</h1>
+<p>
+Michael Boutros (me@michaelboutros)
+</p>
+<h2>Introduction</h2>
+<p>
+&quot;<a href="../classes/Snipt.html">Snipt</a> is your collection of
+frequently used commands or code snippets.&quot; The aim of this library is
+to provide an easy to use interface for developers to create new
+applications that can use <a href="../classes/Snipt.html">Snipt</a>. At the
+same time, a CLI is provided in order to provide extremely easy access to
+the library&#8216;s funtionality. Run &#8216;snipt &#8212;help&#8217; for
+more information on that.
+</p>
+<h2>Installation</h2>
+<p>
+Currently, GitHub isn&#8216;t properly building the gem, so you&#8216;ll
+have to build it manually.
+</p>
+<pre>
+  $ git clone git://github.com/michaelboutros/rsnipt.git
+  $ cd rsnipt
+  $ sudo gem build rsnipt.gemspec
+  $ sudo gem install rsnipt
+</pre>
+<h2>Progress</h2>
+<p>
+At present, almost all / all functionality of the website is implemented. I
+say all because it does everything that I would need, but I say almost all
+because someone else might come along and want something new. If you do
+want something new, feel free to do it yourself, or send me an email.
+</p>
+<h3>Client Example for Getting Snipts</h3>
+<pre>
+  client = Snipt.new('username', 'password')
+
+  client.snipts # =&gt; [SniptStruct, SniptStruct, ...]
+  client.snipts(:ruby) # =&gt; [SniptStruct, SniptStruct, ...]
+</pre>
+<h3>Client Example for Adding Snipts</h3>
+<pre>
+  client = Snipt.new('username', 'password')
+  ruby_snipt = client.snipts(:ruby).first
+
+  ruby_snipt.update(:description =&gt; 'This is a ruby snippet.', :public =&gt; true) # true on success, false otherwise
+  ruby_snipt.destroy # true on success, false otherwise
+</pre>
+<h3>Public Example</h3>
+<pre>
+  snipts = Snipt.snipts # =&gt; [SniptStruct, SniptStruct, ...]
+</pre>
+<h3>CLI Example</h3>
+<pre>
+  # &quot;!!&quot; is the last command that was executed. You will be prompted to enter your username and password, which is
+  # stored for future use. You can flush your credentials from the 'user' command.
+  $ snipt add &quot;ssh user@site.com -p 1234&quot; -d 'ssh-login' -t &quot;shell, site.com&quot; -l text -p false
+
+  # Will execute the command that you just created. This is much more useful for longer commands.
+  $ snipt ssh-login
+</pre>
+<h2>Contributions</h2>
+<p>
+I&#8216;m eagerly awaiting any pull requests, and unless your code causes
+pain to small kittens, it will most likely be accepted.
+</p>
+<h2>Usage and Tests</h2>
+<p>
+For usage examples, just browse the source until the full docs are written.
+As for tests, I haven&#8216;t found any way of testing libraries that
+scrape websites. If anyone has any suggestions, feel free to put them
+forth.
+</p>
+
+    </div>
+
+
+   </div>
+
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+
+      
+
+
+    <!-- if method_list -->
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

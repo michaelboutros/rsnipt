@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>snipts (Snipt)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/rsnipt/snipts.rb, line 3</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">snipts</span>(<span class="ruby-identifier">tag</span> = <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">client</span> = <span class="ruby-keyword kw">nil</span>)
+      <span class="ruby-identifier">tag_path</span> = <span class="ruby-node">&quot;/tag/#{tag}&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">tag</span>
+      
+      <span class="ruby-keyword kw">begin</span>
+        <span class="ruby-identifier">snipts_page</span> = <span class="ruby-constant">WWW</span><span class="ruby-operator">::</span><span class="ruby-constant">Mechanize</span>.<span class="ruby-identifier">new</span>.<span class="ruby-identifier">get</span>(<span class="ruby-node">&quot;http://snipt.net/public/#{tag_path}&quot;</span>)      
+        <span class="ruby-identifier">snipts</span> = <span class="ruby-identifier">snipts_page</span>.<span class="ruby-identifier">search</span>(<span class="ruby-value str">'ul.snipts/li'</span>).<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">snipt</span><span class="ruby-operator">|</span> <span class="ruby-identifier">parse_snipt</span>(<span class="ruby-identifier">snipt</span>, <span class="ruby-identifier">client</span>)}
+      <span class="ruby-keyword kw">rescue</span>
+        []
+      <span class="ruby-keyword kw">end</span>
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

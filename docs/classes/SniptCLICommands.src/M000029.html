@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>update (SniptCLICommands)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/rsnipt/cli.rb, line 131</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update</span>(<span class="ruby-identifier">arguments</span>)    
+    <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">arguments</span>.<span class="ruby-identifier">empty?</span>
+      <span class="ruby-identifier">update</span>([<span class="ruby-value str">'--help'</span>])
+      <span class="ruby-identifier">exit</span>
+    <span class="ruby-keyword kw">else</span>
+      <span class="ruby-identifier">description</span> = <span class="ruby-identifier">arguments</span>.<span class="ruby-identifier">shift</span>
+      
+      <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">arguments</span>.<span class="ruby-identifier">empty?</span>
+        <span class="ruby-identifier">puts</span> <span class="ruby-value str">'No updates provided, snipt not updated.'</span>
+        <span class="ruby-identifier">exit</span>
+      <span class="ruby-keyword kw">end</span>
+    <span class="ruby-keyword kw">end</span>
+    
+    <span class="ruby-identifier">attempt_login</span>
+    
+    <span class="ruby-identifier">snipt</span> = <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">snipts</span>.<span class="ruby-identifier">find</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">snipt</span><span class="ruby-operator">|</span> <span class="ruby-identifier">snipt</span>.<span class="ruby-identifier">description</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">description</span>}
+    <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">snipt</span>.<span class="ruby-identifier">nil?</span>
+      <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Snipt #{description.inspect} not found.&quot;</span>
+      <span class="ruby-identifier">exit</span>
+    <span class="ruby-keyword kw">end</span>
+    
+    <span class="ruby-identifier">snipt_updates</span> = {}
+    <span class="ruby-constant">OptionParser</span>.<span class="ruby-identifier">new</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">options</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">options</span>.<span class="ruby-identifier">banner</span> = <span class="ruby-value str">&quot;usage: snipt update [description] &lt;updates&gt;&quot;</span>
+      
+      <span class="ruby-identifier">options</span>.<span class="ruby-identifier">on</span>(<span class="ruby-value str">'-d [description]'</span>, <span class="ruby-value str">'--description [description]'</span>, <span class="ruby-constant">String</span>, <span class="ruby-value str">'The snipt\'s description.'</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">description</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">snipt_updates</span>[<span class="ruby-identifier">:description</span>] = <span class="ruby-identifier">description</span>
+      <span class="ruby-keyword kw">end</span>
+      
+      <span class="ruby-identifier">options</span>.<span class="ruby-identifier">on</span>(<span class="ruby-value str">'-t [tag1,tag2]'</span>, <span class="ruby-value str">'--tags [tag1,tag2]'</span>, <span class="ruby-constant">Array</span>, <span class="ruby-value str">'The snip\'s tags.'</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">tags</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">snipt_updates</span>[<span class="ruby-identifier">:tags</span>] = <span class="ruby-identifier">tags</span>
+      <span class="ruby-keyword kw">end</span>
+      
+      <span class="ruby-identifier">options</span>.<span class="ruby-identifier">on</span>(<span class="ruby-value str">'-l [language]'</span>, <span class="ruby-value str">'--lexer [language]'</span>, <span class="ruby-constant">String</span>, <span class="ruby-value str">'The snipt\'s lexer.'</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">lexer</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">snipt_updates</span>[<span class="ruby-identifier">:lexer</span>] = (<span class="ruby-ivar">@client</span>.<span class="ruby-identifier">lexer_for</span>(<span class="ruby-identifier">lexer</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">lexer</span>)
+      <span class="ruby-keyword kw">end</span>
+      
+      <span class="ruby-identifier">options</span>.<span class="ruby-identifier">on</span>(<span class="ruby-value str">'-p [public]'</span>, <span class="ruby-value str">'--public [public]'</span>, <span class="ruby-value str">'Whether or not the snipt is public.'</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">_public</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">snipt_updates</span>[<span class="ruby-identifier">:public</span>] = <span class="ruby-identifier">_public</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">capitalize</span>
+      <span class="ruby-keyword kw">end</span>
+            
+      <span class="ruby-identifier">options</span>.<span class="ruby-identifier">on</span>(<span class="ruby-value str">'--help'</span>, <span class="ruby-value str">'Show this message.'</span>) <span class="ruby-keyword kw">do</span>
+        <span class="ruby-identifier">puts</span> <span class="ruby-identifier">options</span>
+        <span class="ruby-identifier">exit</span>
+      <span class="ruby-keyword kw">end</span>   
+    <span class="ruby-keyword kw">end</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">arguments</span>)
+    
+    <span class="ruby-identifier">puts</span> <span class="ruby-identifier">snipt</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">snipt_updates</span>)[<span class="ruby-identifier">:message</span>]
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>
