@@ -3,7 +3,7 @@ require 'base64'
 
 class SniptCLI
   def initialize(command, arguments)
-    self.extend(SniptCLIMethods)
+    self.extend(SniptCLICommands)
         
     if arguments.last == '--help'
       send(command.to_sym, arguments)
@@ -84,7 +84,7 @@ class SniptCLI
    end
 end
 
-module SniptCLIMethods
+module SniptCLICommands
   def add(arguments)
     snipt = {}
     snipt[:code] = arguments.shift
