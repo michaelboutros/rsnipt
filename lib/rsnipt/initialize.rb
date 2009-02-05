@@ -23,7 +23,7 @@ class Snipt
   end
   
   def login(username, password) # :nodoc:
-    login_form = @agent.get('http://www.snipt.net/login').forms.first
+    login_form = @agent.get('http://www.snipt.net/login').forms.at(1)
         
     login_form.username = username
     login_form.password = password

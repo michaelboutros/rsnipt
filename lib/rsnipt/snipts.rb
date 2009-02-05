@@ -52,7 +52,7 @@ class Snipt
         :permalink => 'http://www.snipt.net' + snipt.at('span.description/a').attributes['href'].to_s,
         :public => snipt.at("p#public-raw-#{id}").inner_text == '0' ? false : true,
         :lexer => snipt.at("pre#lexer-raw-#{id}").inner_text,
-        :code => snipt.at("div#code-stylized-#{id}").inner_text,
+        :code => snipt.at("div#code-stylized-#{id}/div").inner_text,
         :description => snipt.at('span.description').inner_text.delete('∞').strip,
         :tags => snipt.search('ul/li').to_a.collect {|tag| tag.inner_text.delete(',?').strip }
       }
